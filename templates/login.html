@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Log in
+{% endblock %}
+
+{% block main %}
+<div>
+    <form action = "/login" method = "post">
+      <h2 class = "login_register">Log in</h2>
+      {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+          <font color = "#ffca3a">{{ message }}</font><br>
+        {% endfor %}
+      {% endwith %}
+      <input type ="text" name = "username" placeholder = "username"><br>
+      <input type ="password" name = "password" placeholder = "password"><br>
+      <button class = "login_register" type = "submit">Log in</button><br><br>
+      <a href = "/register">Register New User</a>
+    </form>
+    </div>
+{% endblock %}

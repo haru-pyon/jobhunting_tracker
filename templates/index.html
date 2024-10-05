@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Top page
+{% endblock %}
+
+{% block main %}
+    <div>
+    <table>
+      <caption>Upcomming events</caption>
+      <tr>
+        <th>Date</th>
+        <th>Company Name</th>
+        <th>Next Process</th>
+        <th>Note</th>
+      </tr>
+      {% for row in rows %}
+      <tr>
+        <td>{{ row[0] }}</td>
+        <td>{{ row[1] }}</td>
+        <td>{{ row[2] }}</td>
+        <td>{{ row[3] }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    </div>
+    <div id = "add_job">
+    <form action="/" method="post">
+      <h2>Add New Job</h2>
+      <input type ="text" name = "companyname" required placeholder = "Company Name"><br>
+      <input type ="url" name = "companyurl" placeholder = "Company URL"><br>
+      <input type ="text" name = "jobtitle" placeholder = "Job Title"><br>
+      <select name = "appliedthrough" required>
+        <option value="null" disabled selected>Applied through</option>
+        <option>Company Page</option>
+        <option>Linkedin</option>
+        <option>Others</option>
+      </select><br>
+      <input type ="text" name = "currentstatus" placeholder = "Current Status"><br>
+      <input type ="text" name = "nextprocess" placeholder = "Next Process"><br>
+      <input type="datetime-local" name="nextdate"><br>
+      <input type = "text" name = "note" placeholder = "Free Note" rows = 2><br>
+      <button type = "submit">Add New Job</button>
+    </form>
+    </div>
+{% endblock %}

@@ -61,7 +61,11 @@ def index():
              next_date, note)
         )
         conn.commit()
-
+        rows = db.execute(
+            "SELECT next_date, company_name, next_process, note FROM jobs WHERE user_id = ? AND \
+                next_date <= DATETIME('now', '14 days')",
+            (session.get("user_id"), )
+        ).fetchall()
         return render_template("index.html", name=name, rows=rows)
 
 
@@ -181,6 +185,6 @@ def register():
             "SELECT * FROM users WHERE user_name = ?", (username, )
         ).fetchall()
         session["user_id"] = rows[0][0]
-        return render_template("/", name=username)
+        return render_template("index.html", name=username)
 
 # flask run --debugger --reload

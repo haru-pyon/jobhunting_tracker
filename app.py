@@ -113,7 +113,7 @@ def history():
                 current_status, next_process, next_date, note FROM jobs WHERE user_id = ? AND company_name LIKE ?",
                 (session.get("user_id"), "%" + search_companyname + "%")
             ).fetchall()
-        return render_template("history.html", rows=rows)
+        return render_template("history.html", name=name, rows=rows)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -186,5 +186,3 @@ def register():
         ).fetchall()
         session["user_id"] = rows[0][0]
         return render_template("index.html", name=username)
-
-# flask run --debugger --reload

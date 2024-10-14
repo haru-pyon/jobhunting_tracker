@@ -40,23 +40,30 @@
       {% endfor %}
     </table>
     </div>
-    <div>
-    <form action = "/history" method = "post">
-          <h2>Update Job ID <input type="text" value = "{{ rows[0][0] }}" name = "jobid" readonly></h2>
-          <input type ="text" placeholder = "Company Name" value = "{{ rows[0][2] }}" name = "companyname">
-          <input type ="url" placeholder = "Company URL" value = "{{ rows[0][3] }}" name = "companyurl"><br>
-          <input type ="text" placeholder = "Job Title" value = "{{ rows[0][4] }}" name = "jobtitle"><br>
-          <select>
-            <option value="{{ rows[0][5] }}" disabled selected name = "appliedthrough">Applied through</option>
-            <option>Company Page</option>
-            <option>Linkedin</option>
-            <option>Others</option>
-          </select><br>
-          <input type ="text" placeholder = "Current Status" value = "{{ rows[0][6] }}" name = "currentstatus"><br>
-          <input type ="text" placeholder = "Next Process" value = "{{ rows[0][7] }}" name = "nextprocess"><br>
-          <input type="datetime-local" name="nextdate" value = "{{ rows[0][8] }}"><br>
-          <input type = "text" placeholder = "Free Note" rows = 2 value = "{{ rows[0][9] }}" name="note" ><br>
-          <button type = "submit">Update</button>
-        </form>
-    </div>
+    {% if rows|length > 0 %}
+      <div>
+      <form action = "/history" method = "post">
+            <h2>Update Job ID <input type="text" value = "{{ rows[0][0] }}" name = "jobid" readonly></h2>
+            <input type ="text" placeholder = "Company Name" value = "{{ rows[0][2] }}" name = "companyname">
+            <input type ="url" placeholder = "Company URL" value = "{{ rows[0][3] }}" name = "companyurl"><br>
+            <input type ="text" placeholder = "Job Title" value = "{{ rows[0][4] }}" name = "jobtitle"><br>
+            <select>
+              <option value="{{ rows[0][5] }}" disabled selected name = "appliedthrough">Applied through</option>
+              <option>Company Page</option>
+              <option>Linkedin</option>
+              <option>Others</option>
+            </select><br>
+            <input type ="text" placeholder = "Current Status" value = "{{ rows[0][6] }}" name = "currentstatus"><br>
+            <input type ="text" placeholder = "Next Process" value = "{{ rows[0][7] }}" name = "nextprocess"><br>
+            <input type="datetime-local" name="nextdate" value = "{{ rows[0][8] }}"><br>
+            <input type = "text" placeholder = "Free Note" rows = 2 value = "{{ rows[0][9] }}" name="note" ><br>
+            <button type = "submit" name =  "update">Update</button>
+            <button type = "submit" name =  "delete">Delete</button>
+          </form>
+      </div>
+    {% else %}
+      <center><strong><font color = "#ff595e">
+        There is no job history to show.
+      </font></strong></center>
+    {% endif %}
 {% endblock %}

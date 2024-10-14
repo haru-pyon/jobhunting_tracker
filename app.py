@@ -79,10 +79,17 @@ def history():
              current_status, next_process, next_date, note FROM jobs WHERE user_id = ?",
             (session.get("user_id"), )
         ).fetchall()
-        return render_template("history.html", name=name, rows=rows)
+    # search for company
+    elif request.form.get("search_companyname"):
+        search_companyname = request.form.get("search_companyname")
+        rows = db.execute(
+            "SELECT job_id, recorded_date, company_name, company_url, job_title, applied_through,\
+            current_status, next_process, next_date, note FROM jobs WHERE user_id = ? AND company_name LIKE ?",
+            (session.get("user_id"), "%" + search_companyname + "%")
+        ).fetchall()
     else:
-        if not request.form.get("search_companyname"):
-            job_id = request.form.get("jobid")
+        job_id = request.form.get("jobid")
+        if "update" in request.form:
             company_name = request.form.get("companyname")
             company_url = request.form.get("companyurl")
             job_title = request.form.get("jobtitle")
@@ -97,23 +104,22 @@ def history():
                 applied_through = ?, current_status = ?, next_process = ?, next_date = ?, note = ? \
                 WHERE job_id = ? AND user_id = ?",
                 (company_name, company_url, job_title, applied_through, current_status, next_process, next_date, note,
-                 job_id, session.get("user_id"))
+                    job_id, session.get("user_id"))
             )
-            rows = db.execute(
-                "SELECT job_id, recorded_date, company_name, company_url, job_title, applied_through,\
-                current_status, next_process, next_date, note FROM jobs WHERE user_id = ?",
-                (session.get("user_id"), )
-            ).fetchall()
-            conn.commit()
-        # search for company
+
+        # delete
         else:
-            search_companyname = request.form.get("search_companyname")
-            rows = db.execute(
-                "SELECT job_id, recorded_date, company_name, company_url, job_title, applied_through,\
-                current_status, next_process, next_date, note FROM jobs WHERE user_id = ? AND company_name LIKE ?",
-                (session.get("user_id"), "%" + search_companyname + "%")
-            ).fetchall()
-        return render_template("history.html", name=name, rows=rows)
+            db.execute(
+                "DELETE FROM jobs WHERE job_id = ? AND user_id = ?", (job_id, session.get("user_id"))
+            )
+
+        rows = db.execute(
+            "SELECT job_id, recorded_date, company_name, company_url, job_title, applied_through,\
+            current_status, next_process, next_date, note FROM jobs WHERE user_id = ?",
+            (session.get("user_id"), )
+        ).fetchall()
+    conn.commit()
+    return render_template("history.html", name=name, rows=rows)
 
 
 @app.route("/login", methods=["GET", "POST"])
